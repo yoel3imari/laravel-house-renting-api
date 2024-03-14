@@ -53,7 +53,7 @@ class HouseController extends Controller
             if($rent_price) $query->orWhereBetween('rent_price', [$rent_price[0], $rent_price[1]]);
         });
 
-        return HouseResource::collection($query->get());
+        return HouseResource::collection($query->paginate(10));
     }
 
     /**

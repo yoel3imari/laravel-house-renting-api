@@ -28,7 +28,10 @@ Route::namespace('Api\V1')->group(function () {
         });
     });
 
-    Route::apiResource('/houses', HouseController::class);
-    Route::apiResource('/rentings', RentingController::class);
+    Route::middleware("auth:sanctum")->group(function () {
+        Route::apiResource('/houses', HouseController::class);
+        Route::apiResource('/rentings', RentingController::class);
+    });
+
 
 });

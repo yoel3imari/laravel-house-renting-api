@@ -16,4 +16,14 @@ class House extends Model
     protected $casts = [
         'images' => 'json',
     ];
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function rentings()
+    {
+        return $this->hasMany(Renting::class);
+    }
 }

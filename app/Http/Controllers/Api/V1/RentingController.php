@@ -12,10 +12,28 @@ class RentingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // $rentings = Renting::all();
-        return RentingResource::collection(Renting::all());
+        $house_id = $request->get("house_id");
+        $user_id = $request->get("user_id");
+        $started_at = $request->get("started_at");
+        $ended_at = $request->get("ended_at");
+        $rent_price = $request->get("rent_price");
+        $rent_by = $request->get("rent_by");
+        $date_range = $request->get("date_range");
+
+        $query = Renting::query();
+
+        if( $house_id ) $query->orWhere("house_id", $house_id);
+        if( $user_id ) $query->orWhere("user_id", $user_id);
+        if( $started_at ) $query->orWhere("started_at",$started_at);
+        if( $ended_at ) $query->orWhere("ended_at", $ended_at);
+        if( $rent_price ) $query->orWhereBetween("rent_price", [$rent_price[0], $rent_price[1]]);
+        if( $rent_by ) $query->orWhere("rent_by", $rent_by); 
+        if( $date_range ) $query->orWhereBetween("updated_at", [$date_range[0], $date_range[1]]);
+
+        return RentingResource::collection($query->paginate(10));
     }
 
     /**
